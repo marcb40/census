@@ -13,13 +13,13 @@ import com.celerity.model.CensusPerson;
 import com.celerity.model.PreliminaryCensus;
 import com.celerity.model.CensusPerson.Gender;
 
-public class TestCensusService {
+public class TestCaseService {
 
 	
 	@Test
 	public void testGetCensus() throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
-		URI uri = new URI("http://localhost:8080/census/json/case/census/1");
+		URI uri = new URI("http://localhost:8080/census/rest/json/case/census/1");
 		PreliminaryCensus census = restTemplate.getForObject(uri, PreliminaryCensus.class);
 		Assert.assertNotNull(census);
 		Assert.assertNotNull(census.getPopulation());
@@ -29,12 +29,12 @@ public class TestCensusService {
 	@Test
 	public void testAddDependent() throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
-		URI enrolleeURI = new URI("http://localhost:8080/census/json/case/census/1/enrollee/3");
+		URI enrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/3");
 		CensusPerson enrollee = restTemplate.getForObject(enrolleeURI, CensusPerson.class);
 		Assert.assertNotNull(enrollee);
 		int initialDependents = enrollee.getEnrolleeDependents().size();
 		
-		URI dependentURI = new URI("http://localhost:8080/census/json/case/census/1/enrollee/3/dependent/0");
+		URI dependentURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/3/dependent/0");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Johnson", "Jim", "Child"), headers);
@@ -50,14 +50,14 @@ public class TestCensusService {
 	public void testAddEnrollee() throws Exception {
 		//check initial census
 		RestTemplate restTemplate = new RestTemplate();
-		URI censusURI = new URI("http://localhost:8080/census/json/case/census/1");
+		URI censusURI = new URI("http://localhost:8080/census/rest/json/case/census/1");
 		PreliminaryCensus census = restTemplate.getForObject(censusURI, PreliminaryCensus.class);
 		Assert.assertNotNull(census);
 		Assert.assertNotNull(census.getPopulation());
 		int initialCensusSize = census.getPopulation().size();
 		
 		//add enrollee
-		URI addEnrolleeURI = new URI("http://localhost:8080/census/json/case/census/1/enrollee/0");
+		URI addEnrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/0");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Smith", "Bill", null), headers);
@@ -65,7 +65,7 @@ public class TestCensusService {
 		Assert.assertNotNull(enrolleeId);
 		
 		//get enrollee
-		URI getEnrolleeURI = new URI("http://localhost:8080/census/json/case/census/1/enrollee/" + enrolleeId);
+		URI getEnrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/" + enrolleeId);
 		CensusPerson enrollee = restTemplate.getForObject(getEnrolleeURI, CensusPerson.class);
 		Assert.assertNotNull(enrollee);
 		Assert.assertEquals("Bill", enrollee.getFirstName());
