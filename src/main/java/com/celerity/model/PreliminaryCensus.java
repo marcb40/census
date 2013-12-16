@@ -36,6 +36,22 @@ public class PreliminaryCensus extends BaseModel {
 		person.setSgsCaseId(getSgsCaseId());
 		population.add(person);
 	}
+	
+	public void updatePopulation(CensusPerson person) {
+		if (this.population == null) {
+			addPopulation(person);
+		} else {
+			for (CensusPerson p : population) {
+				if (person.getId().equals(p.getId())) {
+					population.remove(p);
+					addPopulation(person);
+					break;
+				}
+			}
+		}
+		
+		
+	}
 
 	
 	 

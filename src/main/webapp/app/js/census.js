@@ -23,7 +23,9 @@ app.factory('Census', function($resource){
  */
 app.factory('Enrollee', function($resource){
 	return $resource('/census/rest/json/case/census/:caseId/enrollee/:enrolleeId', {'enrolleeId':0}, {
-		
+		update: {
+		      method: 'PUT'
+		}
 	});
 });   
 
@@ -45,11 +47,23 @@ app.controller("CensusCtrl", function($scope, Census, Enrollee) {
 		$scope.model.census = Census.get({caseId:$scope.model.caseId});
 	};
 	
-	$scope.addEnrollee = function() {
-		Enrollee.save({caseId:$scope.model.caseId}, $scope.enrollee, function(data){
-			$scope.model.census.population.push($scope.enrollee);
-			$scope.enrollee = {};
-		});
+	$scope.saveEnrollee = function(isAdd) { 
+		if (isAdd) {
+			Enrollee.save({caseId:$scope.model.caseId}, $scope.enrollee, function(){
+				$scope.getCase();
+				$scope.enrollee = {};
+			});
+		} else {
+			Enrollee.update({caseId:$scope.model.caseId}, $scope.enrollee, function(){
+				$scope.getCase();
+				$scope.enrollee = {};
+			});
+		}
+		
+	};
+	
+	$scope.editEnrollee = function(selectedEnrollee) {
+		$scope.enrollee = selectedEnrollee;	
 	};
 	
 });
