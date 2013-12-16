@@ -34,12 +34,14 @@ app.factory('Enrollee', function($resource){
  */
 app.factory('Dependent', function($resource){
 	return $resource('/census/rest/json/case/census/:caseId/enrollee/:enrolleeId/dependent/:dependentId', {'dependentId':0}, {
-		
+		update: {
+		      method: 'PUT'
+		}
 	});
 }); 
 
 
-app.controller("CensusCtrl", function($scope, Census, Enrollee) {
+app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 	$scope.model = {caseId:1, census:Census.get({caseId:1})};
 	$scope.enrollee = {};
 	
@@ -62,8 +64,35 @@ app.controller("CensusCtrl", function($scope, Census, Enrollee) {
 		
 	};
 	
+	$scope.saveDependent = function(enrollee) { 
+		if (enrollee.dependent.id == null) {
+			Dependent.save({caseId:$scope.model.caseId, enrolleeId:enrollee.id}, enrollee.dependent, function(){
+				$scope.getCase();
+				enrollee.dependent = {};
+			});
+		} else {
+			Dependent.update({caseId:$scope.model.caseId, enrolleeId:enrollee.id}, enrollee.dependent, function(){
+				$scope.getCase();
+				enrollee.dependent = {};
+			});
+		}
+		
+	};
+	
 	$scope.editEnrollee = function(selectedEnrollee) {
 		$scope.enrollee = selectedEnrollee;	
+	};
+	
+	$scope.editDependent = function(selectedEnrollee, selectedDependent) {
+		selectedEnrollee.dependent = selectedDependent;
+	};
+	
+	$scope.cancelEditEnrollee = function() {
+		$scope.enrollee = {};
+	};
+	
+	$scope.cancelEditDependent = function(enrollee) {
+		enrollee.dependent = {};
 	};
 	
 });

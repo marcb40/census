@@ -121,6 +121,20 @@ public class CensusPerson extends BaseModel {
 		enrolleeDependent.setEnrolleeId(getId());
 		enrolleeDependents.add(enrolleeDependent);
 	}
+	
+	public void updatePopulation(CensusPerson person) {
+		if (this.enrolleeDependents == null) {
+			addEnrolleeDependent(person);
+		} else {
+			for (CensusPerson p : enrolleeDependents) {
+				if (person.getId().equals(p.getId())) {
+					enrolleeDependents.remove(p);
+					addEnrolleeDependent(person);
+					break;
+				}
+			}
+		}
+	}
 
 	
 	

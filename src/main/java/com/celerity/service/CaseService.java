@@ -67,6 +67,16 @@ public class CaseService {
 		enrollee.addEnrolleeDependent(dependent);
 		return dependent;
 	}
+	
+	@PUT
+	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CensusPerson updateDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPerson dependent) {
+		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+		enrollee.updatePopulation(dependent);
+		return dependent;
+	}
 
 	@GET
 	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")

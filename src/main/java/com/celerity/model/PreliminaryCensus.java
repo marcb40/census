@@ -49,11 +49,6 @@ public class PreliminaryCensus extends BaseModel {
 				}
 			}
 		}
-		
-		
 	}
 
-	
-	 
-	 
 }
