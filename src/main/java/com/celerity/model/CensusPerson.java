@@ -132,7 +132,7 @@ public class CensusPerson extends BaseModel {
 		enrolleeDependents.add(enrolleeDependent);
 	}
 	
-	public void updatePopulation(CensusPerson person) {
+	public void updateEnrolleeDependent(CensusPerson person) {
 		if (this.enrolleeDependents == null) {
 			addEnrolleeDependent(person);
 		} else {
@@ -140,6 +140,17 @@ public class CensusPerson extends BaseModel {
 				if (person.getId().equals(p.getId())) {
 					enrolleeDependents.remove(p);
 					addEnrolleeDependent(person);
+					break;
+				}
+			}
+		}
+	}
+	
+	public void deleteEnrolleeDependent(CensusPerson person) {
+		if (this.enrolleeDependents != null) {
+			for (CensusPerson p : enrolleeDependents) {
+				if (person.getId().equals(p.getId())) {
+					enrolleeDependents.remove(p);
 					break;
 				}
 			}

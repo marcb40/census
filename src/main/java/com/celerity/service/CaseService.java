@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -60,8 +61,18 @@ public class CaseService {
 	@GET
 	@Path("census/{caseId}/enrollee/{enrolleeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CensusPerson getEnrollee(@PathParam("enrolleeId") Long enrolleeId) {
+	public CensusPerson getEnrollee(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
 		return DataSource.enrollees.get(enrolleeId);
+	}
+	
+	@DELETE
+	@Path("census/{caseId}/enrollee/{enrolleeId}")
+	public void deleteEnrollee(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
+		SgsCase sgsCase = DataSource.cases.get(caseId);
+		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+		sgsCase.getPreliminaryCensus().deleteFromPopulation(enrollee);
+		 DataSource.enrollees.remove(enrolleeId);
+		
 	}
 
 	@POST
@@ -81,7 +92,7 @@ public class CaseService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CensusPerson updateDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPerson dependent) {
 		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
-		enrollee.updatePopulation(dependent);
+		enrollee.updateEnrolleeDependent(dependent);
 		return dependent;
 	}
 
@@ -96,6 +107,15 @@ public class CaseService {
 			}
 		}
 		return null;
+	}
+	
+	@DELETE
+	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
+	public void deleteDependent(@PathParam("enrolleeId") Long enrolleeId, @PathParam("dependentId") Long dependentId) {
+		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+		
+		CensusPerson dependent = getDependent(enrolleeId, dependentId);
+		enrollee.deleteEnrolleeDependent(dependent);
 	}
 	
 	@InitBinder

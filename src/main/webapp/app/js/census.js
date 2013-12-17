@@ -81,6 +81,31 @@ app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 		
 	};
 	
+	
+	$scope.deleteEnrollee = function(enrollee) { 
+		Enrollee.remove({caseId:$scope.model.caseId, enrolleeId:enrollee.id}, function(){
+			var i = $scope.model.census.population.indexOf(enrollee);
+			if(i != -1) {
+				$scope.model.census.population.splice(i, 1);
+			}
+			$scope.enrollee = {};
+		});
+		
+	};
+	
+	
+	$scope.deleteDependent = function(enrollee, dependent) { 
+		Dependent.remove({caseId:$scope.model.caseId, enrolleeId:enrollee.id, dependentId:dependent.id}, function(){
+			var i = enrollee.enrolleeDependents.indexOf(dependent);
+			if(i != -1) {
+				enrollee.enrolleeDependents.splice(i, 1);
+			}
+			enrollee.dependent = {};
+		});
+		
+	};
+	
+	
 	$scope.editEnrollee = function(selectedEnrollee) {
 		$scope.enrollee = selectedEnrollee;	
 	};

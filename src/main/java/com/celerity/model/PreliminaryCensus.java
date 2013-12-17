@@ -50,5 +50,16 @@ public class PreliminaryCensus extends BaseModel {
 			}
 		}
 	}
+	
+	public void deleteFromPopulation(CensusPerson person) {
+		if (this.population != null) {
+			for (CensusPerson p : population) {
+				if (person.getId().equals(p.getId())) {
+					population.remove(p);
+					break;
+				}
+			}
+		}
+	}
 
 }
