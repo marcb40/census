@@ -4,6 +4,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.celerity.service.DateAdapter;
+
 public class CensusPerson extends BaseModel {
 
 	public enum Gender {
@@ -36,6 +44,8 @@ public class CensusPerson extends BaseModel {
 		this.dependentType = dependentType;
 	}
 
+	@XmlElement(name = "birthDate")
+	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date birthDate;
 
 	private Gender gender;

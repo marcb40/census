@@ -1,4 +1,4 @@
-var app = angular.module("myApp", ['ngResource', 'ngCookies']);
+var app = angular.module("myApp", ['ngResource', 'ngCookies', '$strap.directives']);
 
 app.config(function ($httpProvider, $routeProvider) {
 	$httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
@@ -44,6 +44,7 @@ app.factory('Dependent', function($resource){
 app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 	$scope.model = {caseId:1, census:Census.get({caseId:1})};
 	$scope.enrollee = {};
+	$scope.genderOptions = [{value:'M', name:'Male'}, {value:'F', name:'Female'}];
 	
 	$scope.getCase = function() {
 		$scope.model.census = Census.get({caseId:$scope.model.caseId});

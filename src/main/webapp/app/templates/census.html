@@ -1,123 +1,129 @@
 <div class="row">
-			<div class="span4">
-				<div class="well">
-					<ul class="unstyled text-info">
-						<li><h3>Basic Info</h3></li>
-						<li><h3>Company Info</h3></li>
-						<li><h3>Census</h3></li>
+			<div class="col-md-4 ">
+					<ul class="nav nav-pills nav-stacked">
+					    <li><a href="#">Basic Info</a></li>
+					    <li><a href="#">Company Info</a></li>
+					    <li class="active"><a href="#">Census</a></li>
 					</ul>
-				</div>
 			</div>
-			<div class="span8">
-				<div class="input-append">
-					<input  class="span2" type="text" ng-model="model.caseId" placeholder="Find a Case">
-					<button class="btn btn-inverse" ng-click="getCase()">Search</button>
-				</div>
-				<div>
-					<h2>Census - My Organization</h2>
+			<div class="col-md-8">
+				<div class="input-group col-md-4">
+					<input class="form-control" type="text" ng-model="model.caseId" placeholder="Find a Case">
+					<span class="input-group-addon glyphicon glyphicon-search" ng-click="getCase()"></span>
 				</div>
 				
-				<div class="muted">
-					<small>To create a case and return the final quote, please click 'Submit for Final Quote' when you have finished entering employee information</small>
+				<div class="page-header">
+				  <h1>Census <small> My Organization</small></h1>
+				  	<div class="muted">
+						<small>To create a case and return the final quote, please click 'Submit for Final Quote' when you have finished entering employee information</small>
+					</div>
 				</div>
+			
 				
-				<div class="well"> 
-					<form name="employeeForm" ng-submit="saveEnrollee(enrollee.id == null)">
-						<div>Manually Add Entries</div>
-						<input type="hidden" ng-model="enrollee.id">
-						<div class="row-fluid">
-							<div class="span3">
-							<input class="input-medium" type="text" placeholder="First Name" ng-model="enrollee.firstName" required>
-							</div>
-							<div class="span3">
-							<input class="input-medium" type="text" placeholder="Last Name" ng-model="enrollee.lastName" required>
-							</div>
-							
-							<div class="span3">
-								<div id="dp" class="input-append date" data-date-format="yyyy-mm-dd" data-date="">
-									<input class="input-small" type="date" placeholder="Birth Date" ng-model="enrollee.birthDate" required></input>
-									<span class="add-on">
-										<i class="icon-calendar"></i>
-									</span>
+				<div class="panel panel-info"> 
+					<div class="panel-heading">Add or Edit Enrollees</div>
+					<div class="panel-body">
+						<form name="employeeForm" ng-submit="saveEnrollee(enrollee.id == null)" role="form" class="form-horizontal">
+							<input type="hidden" ng-model="enrollee.id">
+							<div class="form-group">
+								<div class="col-md-3">
+									<input class="form-control" type="text" placeholder="First Name" ng-model="enrollee.firstName" required>
+								</div>
+								<div class="col-md-3">
+									<input class="form-control" type="text" placeholder="Last Name" ng-model="enrollee.lastName" required>
+								</div>
+								
+								<div class="col-md-3">
+									<div  class="input-group">
+										<input class="form-control" type="date" placeholder="Birth Date" ng-model="enrollee.birthDate"  data-date-format="yyyy-mm-dd" required bs-datepicker data-type="string"></input>
+										<span class="input-group-addon" data-toggle="datepicker">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>  
+									
+								</div>
+								<div class="col-md-3">
+									<select class="form-control"  ng-model="enrollee.gender"  ng-options="g.value as g.name for g in genderOptions" ng-required></select>
 								</div>
 							</div>
-							<div class="span3">
-								<select class="input-medium"  ng-model="enrollee.gender" required>
-									<option value="M">Male</option>
-									<option value="F">Female</option>
-								</select>
+							<div class="form-group">
+								<div class="col-md-10">
+									<button type="submit" class="btn btn-info" ng-show="enrollee.id == null">Add Enrollee</button>
+									<button type="submit" class="btn btn-info" ng-hide="enrollee.id == null">Update Enrollee</button>
+									<button type="button" class="btn btn-default" ng-click="cancelEditEnrollee()">Cancel</button>
+								</div>
 							</div>
-						</div>
-			
-						<button type="submit" class="btn btn-primary" ng-show="enrollee.id == null">Add Enrollee</button>
-						<button type="submit" class="btn btn-primary" ng-hide="enrollee.id == null">Update Enrollee</button>
-						<button type="button" class="btn" ng-click="cancelEditEnrollee()">Cancel</button>
-					</form>
+						</form>
+					</div>
 				</div>
 				
 				<div id="enrollees">
 				
 					<div ng-repeat="enrollee in model.census.population">
 						<div class="well">
-							<div class="row-fluid">
-								<div class="span10 text-left"><h4>{{enrollee.firstName}} {{enrollee.lastName}}</h4></div>
-								<div class="span2 text-right"><i class="icon-pencil" ng-click="editEnrollee(enrollee)"></i></div>
+							<div class="row">
+								<div class="col-md-10 text-left"><h2>{{enrollee.firstName}} {{enrollee.lastName}}</h2></div>
+								<div class="col-md-2 text-right"><i class="glyphicon glyphicon-pencil" ng-click="editEnrollee(enrollee)"></i></div>
 								
-								<div class="span10">
-									<table class="table table-condensed">
-										 <thead>
-											<tr>
-												<th>First Name</th>
-												<th>Last Name</th>
-												<th>Type</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="dependent in enrollee.enrolleeDependents"  ng-click="editDependent(enrollee, dependent)">
-												<td>{{dependent.firstName}}</td>
-												<td>{{dependent.lastName}}</td>
-												<td>{{dependent.dependentType}}</td>
-											</tr>
-										</tbody>
-									</table>
+								<div class="col-md-12">
+									<div class="panel panel-primary">
+										<div class="panel-heading">Dependents</div>
+										<table class="table table-hover">
+											 <thead>
+												<tr>
+													<th>First Name</th>
+													<th>Last Name</th>
+													<th>Type</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="dependent in enrollee.enrolleeDependents"  ng-click="editDependent(enrollee, dependent)">
+													<td>{{dependent.firstName}}</td>
+													<td>{{dependent.lastName}}</td>
+													<td>{{dependent.dependentType}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</div>
-								<div class="span12"> 
-									<form ng-submit="saveDependent(enrollee)">
-										<input type="hidden" ng-model="enrollee.dependent.id">
-										<div class="row-fluid">
-											<div class="span3">
-												<select class="input-medium"  ng-model="enrollee.dependent.dependentType" required>
-													<option value="Spouse">Spouse</option>
-													<option value="Child">Child</option>
-												</select>
-											</div>
-											<div class="span3">
-												<input class="input-medium" type="text" placeholder="First Name" ng-model="enrollee.dependent.firstName" required>
-											</div>
-											<div class="span3">
-												<input class="input-medium" type="text" placeholder="Last Name" ng-model="enrollee.dependent.lastName" required>
-											</div>
-										</div>
-											<div class="row-fluid">
-											<div class="span3">
-												<div id="dp" class="input-append date" data-date-format="yyyy-mm-dd" data-date="">
-													<input class="input-small" type="date" placeholder="Birth Date" ng-model="enrollee.dependent.birthDate" required></input>
-													<span class="add-on">
-														<i class="icon-calendar"></i>
-													</span>
+								<div class="col-md-12"> 
+									<form ng-submit="saveDependent(enrollee)" role="form" class="form-horizontal">
+											<div class="form-group">
+												<div class="col-md-3">
+													<input type="hidden" ng-model="enrollee.dependent.id">
+													<select class="form-control"  ng-model="enrollee.dependent.dependentType" required>
+														<option value="Spouse">Spouse</option>
+														<option value="Child">Child</option>
+													</select>
+												</div>
+												<div class="col-md-3">
+													<input class="form-control" type="text" placeholder="First Name" ng-model="enrollee.dependent.firstName" required>
+												</div>
+												<div class="col-md-3">
+													<input class="form-control" type="text" placeholder="Last Name" ng-model="enrollee.dependent.lastName" required>
+												</div>
+												<div class="col-md-3">
+													<div  class="input-group">
+														<input class="form-control" type="date" placeholder="Birth Date" ng-model="enrollee.dependent.birthDate"  data-date-format="yyyy-mm-dd" required bs-datepicker data-type="string"></input>
+														<span class="input-group-addon" data-toggle="datepicker">
+															<span class="glyphicon glyphicon-calendar"></span>
+														</span>
+													</div>   
 												</div>
 											</div>
-											<div class="span3">
-												<select class="input-medium"  ng-model="enrollee.dependent.gender" required>
-													<option value="M">Male</option>
-													<option value="F">Female</option>
-												</select>
+											<div class="form-group">
+												<div class="col-md-3">
+													<select class="form-control"  ng-model="enrollee.dependent.gender"  ng-options="g.value as g.name for g in genderOptions" required>
+													</select>
+												</div>
 											</div>
+											<div class="form-group">
+												<div class="col-md-12">
+													<button type="submit" class="btn btn-primary" ng-show="enrollee.dependent.id == null">Add Dependent</button>
+													<button type="submit" class="btn btn-primary" ng-hide="enrollee.dependent.id == null">Update Dependent</button>
+													<button type="button" class="btn btn-default" ng-click="cancelEditDependent(enrollee)">Cancel</button>
+												</div>
 										</div>
-							
-										<button type="submit" class="btn btn-primary" ng-show="enrollee.dependent.id == null">Add Dependent</button>
-										<button type="submit" class="btn btn-primary" ng-hide="enrollee.dependent.id == null">Update Dependent</button>
-										<button type="button" class="btn" ng-click="cancelEditDependent(enrollee)">Cancel</button>
 									</form>
 								</div>
 							</div>
@@ -129,10 +135,6 @@
 		</div>
 		
 <script type="text/javascript">
-	$(function(){
-		$('#dp').datepicker()
-			.on('changeDate', function(ev){
-				$('#dp').datepicker('hide');
-			});
-	});
+	 $(function(){
+	}); 
 </script>
