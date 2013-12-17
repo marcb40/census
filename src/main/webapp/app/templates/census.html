@@ -43,7 +43,9 @@
 									
 								</div>
 								<div class="col-md-3">
-									<select class="form-control"  ng-model="enrollee.gender"  ng-options="g.value as g.name for g in genderOptions" ng-required></select>
+									<select class="form-control" ng-model="enrollee.gender"  ng-options="g.value as g.name for g in genderOptions" required>
+										<option value="">Select Gender...</option> 
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -91,9 +93,8 @@
 											<div class="form-group">
 												<div class="col-md-3">
 													<input type="hidden" ng-model="enrollee.dependent.id">
-													<select class="form-control"  ng-model="enrollee.dependent.dependentType" required>
-														<option value="Spouse">Spouse</option>
-														<option value="Child">Child</option>
+													<select class="form-control"  ng-model="enrollee.dependent.dependentType"  ng-options="d.value as d.name for d in dependentTypeOptions" required>
+														<option value="">Type...</option> 
 													</select>
 												</div>
 												<div class="col-md-3">
@@ -114,6 +115,7 @@
 											<div class="form-group">
 												<div class="col-md-3">
 													<select class="form-control"  ng-model="enrollee.dependent.gender"  ng-options="g.value as g.name for g in genderOptions" required>
+														<option value="">Gender...</option> 
 													</select>
 												</div>
 											</div>
