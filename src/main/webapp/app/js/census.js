@@ -44,8 +44,8 @@ app.factory('Dependent', function($resource){
 app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 	$scope.model = {caseId:1, census:Census.get({caseId:1})};
 	$scope.enrollee = {};
-	$scope.genderOptions = [{value:'M', name:'Male'}, {value:'F', name:'Female'}];
-	$scope.dependentTypeOptions = [{value:'Spouse', name:'Spouse'}, {value:'Child', name:'Child'}];
+	
+	setStaticOptions($scope);
 	
 	$scope.getCase = function() {
 		$scope.model.census = Census.get({caseId:$scope.model.caseId});
@@ -122,7 +122,16 @@ app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 		enrollee.dependent = {};
 	};
 	
+	
 });
+
+function setStaticOptions($scope) {
+	$scope.genderOptions = [{value:'M', name:'Male'}, {value:'F', name:'Female'}];
+	$scope.dependentTypeOptions = [{value:'Spouse', name:'Spouse'}, {value:'Child', name:'Child'}];
+	$scope.statusOptions = [{value:'ACTIVE', name:'Active'}, {value:'COBRA', name:'COBRA'}];
+	$scope.outOfAreaOptions = [{value:'true', name:'Out of Area'}, {value:'false', name:'In Area'}];
+	$scope.tobaccoOptions = [{value:'true', name:'Uses Tobacco'}, {value:'false', name:'No Tobacco'}];
+}
 
 
 

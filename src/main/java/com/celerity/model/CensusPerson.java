@@ -4,18 +4,20 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.celerity.service.BooleanAdapter;
 import com.celerity.service.DateAdapter;
 
 public class CensusPerson extends BaseModel {
 
 	public enum Gender {
-	    F, M
+		F, M
+	}
+
+	public enum EmploymentStatus {
+		ACTIVE, COBRA, DISABLED
 	}
 
 	public CensusPerson() {
@@ -25,23 +27,31 @@ public class CensusPerson extends BaseModel {
 	public CensusPerson(Long id) {
 		super(id);
 	}
-	
-	public CensusPerson(int id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType) {
+
+	public CensusPerson(int id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
 		super(Long.valueOf(id));
 		this.birthDate = birthDate;
 		this.gender = gender;
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.dependentType = dependentType;
+		this.outOfArea = outOfArea;
+		this.employmentStatus = employmentStatus;
+		this.usesTobacco = usesTobacco;
+		this.lastTobaccoUse = lastTobaccoUse;
 	}
 
-	public CensusPerson(Long id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType) {
+	public CensusPerson(Long id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
 		super(id);
 		this.birthDate = birthDate;
 		this.gender = gender;
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.dependentType = dependentType;
+		this.outOfArea = outOfArea;
+		this.employmentStatus = employmentStatus;
+		this.usesTobacco = usesTobacco;
+		this.lastTobaccoUse = lastTobaccoUse;
 	}
 
 	@XmlElement(name = "birthDate")
@@ -59,6 +69,18 @@ public class CensusPerson extends BaseModel {
 	private String dependentType;
 
 	private Long enrolleeId;
+
+	@XmlElement(name = "outOfArea")
+	@XmlJavaTypeAdapter(BooleanAdapter.class)
+	private Boolean outOfArea;
+
+	private EmploymentStatus employmentStatus;
+
+	@XmlElement(name = "usesTobacco")
+	@XmlJavaTypeAdapter(BooleanAdapter.class)
+	private Boolean usesTobacco;
+
+	private String lastTobaccoUse;
 
 	private Set<CensusPerson> enrolleeDependents = new HashSet<CensusPerson>(0);
 
@@ -109,7 +131,7 @@ public class CensusPerson extends BaseModel {
 	public void setEnrolleeDependents(Set<CensusPerson> enrolleeDependents) {
 		this.enrolleeDependents = enrolleeDependents;
 	}
-	
+
 	public Long getSgsCaseId() {
 		return sgsCaseId;
 	}
@@ -126,12 +148,45 @@ public class CensusPerson extends BaseModel {
 		this.enrolleeId = enrolleeId;
 	}
 
+	public Boolean getOutOfArea() {
+		return outOfArea;
+	}
+
+	public void setOutOfArea(Boolean outOfArea) {
+		this.outOfArea = outOfArea;
+	}
+
+	public Boolean getUsesTobacco() {
+		return usesTobacco;
+	}
+
+	public void setUsesTobacco(Boolean usesTobacco) {
+		this.usesTobacco = usesTobacco;
+	}
+
+	public String getLastTobaccoUse() {
+		return lastTobaccoUse;
+	}
+
+	public void setLastTobaccoUse(String lastTobaccoUse) {
+		this.lastTobaccoUse = lastTobaccoUse;
+	}
+
+	public EmploymentStatus getEmploymentStatus() {
+		return employmentStatus;
+	}
+
+	public void setEmploymentStatus(EmploymentStatus employmentStatus) {
+		this.employmentStatus = employmentStatus;
+	}
+
 	public void addEnrolleeDependent(CensusPerson enrolleeDependent) {
-		if (enrolleeDependents == null) enrolleeDependents = new HashSet<CensusPerson>();
+		if (enrolleeDependents == null)
+			enrolleeDependents = new HashSet<CensusPerson>();
 		enrolleeDependent.setEnrolleeId(getId());
 		enrolleeDependents.add(enrolleeDependent);
 	}
-	
+
 	public void updateEnrolleeDependent(CensusPerson person) {
 		if (this.enrolleeDependents == null) {
 			addEnrolleeDependent(person);
@@ -145,7 +200,7 @@ public class CensusPerson extends BaseModel {
 			}
 		}
 	}
-	
+
 	public void deleteEnrolleeDependent(CensusPerson person) {
 		if (this.enrolleeDependents != null) {
 			for (CensusPerson p : enrolleeDependents) {
@@ -157,6 +212,4 @@ public class CensusPerson extends BaseModel {
 		}
 	}
 
-	
-	
 }

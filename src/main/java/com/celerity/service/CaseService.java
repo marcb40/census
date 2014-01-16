@@ -1,6 +1,5 @@
 package com.celerity.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -120,9 +119,8 @@ public class CaseService {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+		DateAdapter.inDateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(DateAdapter.inDateFormat, false));
 	}
 
 }
