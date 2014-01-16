@@ -129,8 +129,7 @@ function setStaticOptions($scope) {
 	$scope.genderOptions = [{value:'M', name:'Male'}, {value:'F', name:'Female'}];
 	$scope.dependentTypeOptions = [{value:'Spouse', name:'Spouse'}, {value:'Child', name:'Child'}];
 	$scope.statusOptions = [{value:'ACTIVE', name:'Active'}, {value:'COBRA', name:'COBRA'}];
-	$scope.outOfAreaOptions = [{value:'true', name:'Out of Area'}, {value:'false', name:'In Area'}];
-	$scope.tobaccoOptions = [{value:'true', name:'Uses Tobacco'}, {value:'false', name:'No Tobacco'}];
+	$scope.booleanOptions = [{value:'true', name:'Yes'}, {value:'false', name:'No'}];
 }
 
 

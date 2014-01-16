@@ -1,12 +1,12 @@
 <div class="row">
-			<div class="col-md-4 ">
+			<div class="col-md-2 ">
 					<ul class="nav nav-pills nav-stacked">
 					    <li><a href="#">Basic Info</a></li>
 					    <li><a href="#">Company Info</a></li>
 					    <li class="active"><a href="#">Census</a></li>
 					</ul>
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-10">
 				<div class="input-group col-md-4">
 					<input class="form-control" type="text" ng-model="model.caseId" placeholder="Find a Case">
 					<span class="input-group-addon glyphicon glyphicon-search" ng-click="getCase()"></span>
@@ -27,20 +27,24 @@
 							<input type="hidden" ng-model="enrollee.id">
 							<div class="form-group">
 								<div class="col-md-3">
-									<input class="form-control" type="text" placeholder="First Name" ng-model="enrollee.firstName" required>
+									<label>First Name</label>
+									<input class="form-control" type="text"  ng-model="enrollee.firstName" required>
 								</div>
 								<div class="col-md-3">
-									<input class="form-control" type="text" placeholder="Last Name" ng-model="enrollee.lastName" required>
+									<label>Last Name</label>
+									<input class="form-control" type="text"  ng-model="enrollee.lastName" required>
 								</div>
 								
 								<div class="col-md-3">
+									<label>Gender</label>
 									<select class="form-control" ng-model="enrollee.gender"  ng-options="g.value as g.name for g in genderOptions" required>
-										<option value="">Select Gender...</option> 
+										<option value=""></option> 
 									</select>
 								</div>
 								<div class="col-md-3">
+									<label>Birth Date</label>
 									<div  class="input-group">
-										<input class="form-control" type="date" placeholder="Birth Date" ng-model="enrollee.birthDate"  data-date-format="mm/dd/yyyy" required bs-datepicker data-type="string"></input>
+										<input class="form-control" type="date"  ng-model="enrollee.birthDate"  data-date-format="mm/dd/yyyy" required bs-datepicker data-type="string"></input>
 										<span class="input-group-addon" data-toggle="datepicker">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
@@ -51,22 +55,35 @@
 							</div>
 							<div class="form-group">
 								<div class="col-md-3">
+									<label>Status</label>
 									<select class="form-control" ng-model="enrollee.employmentStatus"  ng-options="o.value as o.name for o in statusOptions" required>
-										<option value="">Status...</option> 
+										<option value=""></option> 
 									</select>
 								</div>
 								<div class="col-md-3">
-									<select class="form-control" ng-model="enrollee.outOfArea"  ng-options="o.value as o.name for o in outOfAreaOptions" required>
-										<option value="">Out of Area?...</option> 
+									<label>Out of Area</label>
+									<select class="form-control" ng-model="enrollee.outOfArea"  ng-options="o.value as o.name for o in booleanOptions" required>
+										<option value=""></option> 
 									</select>
 								</div>
-								<div class="col-md-3">
-									<select class="form-control" ng-model="enrollee.usesTobacco"  ng-options="o.value as o.name for o in tobaccoOptions" required>
-										<option value="">Tobacco?...</option> 
-									</select>
+								
+							</div>
+							<div class="form-group">
+								<div class="col-md-9 text-right">
+									<label>Within the past six months, have you used tobacco regularly?</label>
 								</div>
 								<div class="col-md-3">
-									<input class="form-control" type="text" placeholder="Last Tobocco Use" ng-model="enrollee.lastTobaccoUse" ng-show="enrollee.usesTobacco == 'true'">
+									<select class="form-control" ng-model="enrollee.usesTobacco"  ng-options="o.value as o.name for o in booleanOptions" required>
+										<option value=""></option> 
+									</select>
+								</div>
+							</div>
+							<div class="form-group" ng-show="enrollee.usesTobacco == 'true'">
+								<div class="col-md-9 text-right">
+									<label>(Optional) If yes, when was the last time you used tobacco regularly? (MM/YYYY)</label>
+								</div>
+								<div class="col-md-3">
+									<input class="form-control" type="text"  ng-model="enrollee.lastTobaccoUse"  pattern="^((0[1-9])|(1[0-2]))\/(\d{4})$">
 								</div>
 							</div>
 							<div class="form-group">
@@ -85,13 +102,34 @@
 					<div ng-repeat="enrollee in model.census.population">
 						<div class="well">
 							<div class="row">
-								<div class="col-md-10 text-left"><h2>{{enrollee.firstName}} {{enrollee.lastName}}</h2></div>
-								<div class="col-md-2 text-right">
+								<div class="col-md-11 enrollee-name">{{enrollee.firstName}} {{enrollee.lastName}}</div>
+								<div class="col-md-1 text-right">
 									<i class="glyphicon glyphicon-pencil" ng-click="editEnrollee(enrollee)"></i>
 									<i class="glyphicon glyphicon-trash" ng-click="deleteEnrollee(enrollee)"></i>
 								</div>
+								<div class="col-md-3 col-md-offset-1">
+									<span><strong>Status:</strong></span>
+									<span>{{enrollee.employmentStatus}}</span>
+								</div>
+								<div class="col-md-3">
+									<span><strong>Birthday:</strong></span>
+									<span>{{enrollee.birthDate}}</span>
+								</div>
+								<div class="col-md-3">
+									<span><strong>Out of Area:</strong></span>
+									<span>{{enrollee.outOfArea}}</span>
+								</div>
 								
-								<div class="col-md-12">
+								<div class="col-md-3 col-md-offset-1">
+									<span><strong>Gender:</strong></span>
+									<span>{{enrollee.gender}}</span>
+								</div>
+								
+								<div class="col-md-3">
+									<span><strong>Tobacco:</strong></span>
+									<span>{{enrollee.usesTobacco}}</span>
+								</div>
+								<div class="col-md-12 dependent-section">
 									<div class="panel panel-primary" ng-hide="enrollee.enrolleeDependents.length == 0">
 										<div class="panel-heading">Dependents</div>
 										<table class="table table-hover">
@@ -124,19 +162,23 @@
 														<div class="form-group">
 															<div class="col-md-3">
 																<input type="hidden" ng-model="enrollee.dependent.id">
+																<label>Dependent Type</label>
 																<select class="form-control"  ng-model="enrollee.dependent.dependentType"  ng-options="d.value as d.name for d in dependentTypeOptions" required>
-																	<option value="">Type...</option> 
+																	<option value=""></option> 
 																</select>
 															</div>
 															<div class="col-md-3">
-																<input class="form-control" type="text" placeholder="First Name" ng-model="enrollee.dependent.firstName" required>
+																<label>First Name</label>
+																<input class="form-control" type="text"  ng-model="enrollee.dependent.firstName" required>
 															</div>
 															<div class="col-md-3">
-																<input class="form-control" type="text" placeholder="Last Name" ng-model="enrollee.dependent.lastName" required>
+																<label>Last Name</label>
+																<input class="form-control" type="text" ng-model="enrollee.dependent.lastName" required>
 															</div>
 															<div class="col-md-3">
+																<label>Birth Date</label>
 																<div  class="input-group">
-																	<input class="form-control" type="date" placeholder="Birth Date" ng-model="enrollee.dependent.birthDate"  data-date-format="mm/dd/yyyy" required bs-datepicker data-type="string"></input>
+																	<input class="form-control" type="date"  ng-model="enrollee.dependent.birthDate"  data-date-format="mm/dd/yyyy" required bs-datepicker data-type="string"></input>
 																	<span class="input-group-addon" data-toggle="datepicker">
 																		<span class="glyphicon glyphicon-calendar"></span>
 																	</span>
@@ -145,22 +187,34 @@
 														</div>
 														<div class="form-group">
 															<div class="col-md-3">
+																<label>Gender</label>
 																<select class="form-control"  ng-model="enrollee.dependent.gender"  ng-options="g.value as g.name for g in genderOptions" required>
-																	<option value="">Gender...</option> 
+																	<option value=""></option> 
 																</select>
 															</div>
 															<div class="col-md-3">
-																<select class="form-control" ng-model="enrollee.dependent.outOfArea"  ng-options="o.value as o.name for o in outOfAreaOptions" required>
-																	<option value="">Out of Area?...</option> 
+																<label>Out of Area</label>
+																<select class="form-control" ng-model="enrollee.dependent.outOfArea"  ng-options="o.value as o.name for o in booleanOptions" required>
+																	<option value=""></option> 
 																</select>
 															</div>
-															<div class="col-md-3">
-																<select class="form-control" ng-model="enrollee.dependent.usesTobacco"  ng-options="o.value as o.name for o in tobaccoOptions" required>
-																	<option value="">Tobacco?...</option> 
-																</select>
+														</div>
+														<div class="form-group">
+															<div class="col-md-9 text-right" >
+																<label>Within the past six months, have you used tobacco regularly?</label>
 															</div>
 															<div class="col-md-3">
-																<input class="form-control" type="text" placeholder="Last Tobocco Use" ng-model="enrollee.dependent.lastTobaccoUse" ng-show="enrollee.dependent.usesTobacco == 'true'">
+																<select class="form-control" ng-model="enrollee.dependent.usesTobacco"  ng-options="o.value as o.name for o in booleanOptions" required>
+																	<option value=""></option> 
+																</select>
+															</div>
+														</div>
+														<div class="form-group" ng-show="enrollee.dependent.usesTobacco == 'true'">
+															<div class="col-md-9 text-right">
+																<label>(Optional) If yes, when was the last time you used tobacco regularly? (MM/YYYY)</label>
+															</div>
+															<div class="col-md-3">
+																<input class="form-control" type="text"  ng-model="enrollee.dependent.lastTobaccoUse"  pattern="^((0[1-9])|(1[0-2]))\/(\d{4})$">
 															</div>
 														</div>
 														<div class="form-group">
