@@ -10,8 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import com.celerity.model.CensusPerson;
-import com.celerity.model.PreliminaryCensus;
+import com.celerity.model.CensusPerson.EmploymentStatus;
 import com.celerity.model.CensusPerson.Gender;
+import com.celerity.model.PreliminaryCensus;
 
 public class TestCaseService {
 
@@ -23,7 +24,7 @@ public class TestCaseService {
 		PreliminaryCensus census = restTemplate.getForObject(uri, PreliminaryCensus.class);
 		Assert.assertNotNull(census);
 		Assert.assertNotNull(census.getPopulation());
-		Assert.assertTrue(census.getPopulation().size() >= 7);
+		Assert.assertTrue(census.getPopulation().size() >= 2);
 	}
 	
 	@Test
@@ -37,9 +38,9 @@ public class TestCaseService {
 		URI dependentURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/3/dependent/0");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Johnson", "Jim", "Child"), headers);
-		Long dependentId = restTemplate.postForObject(dependentURI, request, Long.class);
-		Assert.assertNotNull(dependentId);
+		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Johnson", "Jim", "Child", false, EmploymentStatus.ACTIVE, true, "08/2012"), headers);
+		CensusPerson dependent = restTemplate.postForObject(dependentURI, request, CensusPerson.class);
+		Assert.assertNotNull(dependent);
 		enrollee = restTemplate.getForObject(enrolleeURI, CensusPerson.class);
 		Assert.assertNotNull(enrollee);
 		Assert.assertEquals(initialDependents + 1, enrollee.getEnrolleeDependents().size());
@@ -60,13 +61,13 @@ public class TestCaseService {
 		URI addEnrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/0");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Smith", "Bill", null), headers);
-		Long enrolleeId = restTemplate.postForObject(addEnrolleeURI, request, Long.class);
-		Assert.assertNotNull(enrolleeId);
+		HttpEntity<CensusPerson> request = new HttpEntity<CensusPerson>( new CensusPerson(null,null,Gender.M, "Smith", "Bill", null, false, EmploymentStatus.ACTIVE, true, "08/2012"), headers);
+		CensusPerson enrollee = restTemplate.postForObject(addEnrolleeURI, request, CensusPerson.class);
+		Assert.assertNotNull(enrollee);
 		
 		//get enrollee
-		URI getEnrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/" + enrolleeId);
-		CensusPerson enrollee = restTemplate.getForObject(getEnrolleeURI, CensusPerson.class);
+		URI getEnrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/" + enrollee.getId());
+		enrollee = restTemplate.getForObject(getEnrolleeURI, CensusPerson.class);
 		Assert.assertNotNull(enrollee);
 		Assert.assertEquals("Bill", enrollee.getFirstName());
 		

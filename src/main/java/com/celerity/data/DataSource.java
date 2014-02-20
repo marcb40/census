@@ -44,7 +44,7 @@ public class DataSource {
 		return sgsCase;
 	}
 	
-	private static Date toDate(int year, int month, int day) {
+	public static Date toDate(int year, int month, int day) {
 		Calendar d = Calendar.getInstance();
 		d.set(year, month, day);
 		return d.getTime();

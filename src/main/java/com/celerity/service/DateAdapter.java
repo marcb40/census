@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class DateAdapter extends XmlAdapter<String, Date> {
 
-	public static final SimpleDateFormat outDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	public static final SimpleDateFormat outDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static final SimpleDateFormat inDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -26,7 +26,8 @@ public class DateAdapter extends XmlAdapter<String, Date> {
 			try {
 				return outDateFormat.parse(v);
 			} catch (ParseException e2) {
-				throw new WebApplicationException(e2);
+				Date d = new Date(Long.valueOf(v));
+				return d;
 			}
 		}
 	}
