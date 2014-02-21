@@ -7,8 +7,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.celerity.service.rest.BooleanAdapter;
-import com.celerity.service.rest.DateAdapter;
+import com.celerity.service.rest.adapters.BooleanAdapter;
+import com.celerity.service.rest.adapters.DateAdapter;
 
 public class CensusPersonDto extends Basedto {
 

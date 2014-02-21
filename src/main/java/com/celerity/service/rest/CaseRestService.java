@@ -23,11 +23,12 @@ import com.celerity.dto.PreliminaryCensusDto;
 import com.celerity.dto.RateDto;
 import com.celerity.dto.SgsCaseDto;
 import com.celerity.service.api.RateService;
+import com.celerity.service.rest.adapters.DateAdapter;
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/json/case")
 @Component
-public class CaseService {
+public class CaseRestService {
 
 	@InjectParam 
 	private RateService rateService;

@@ -16,11 +16,14 @@
 	
 	<bean id="abcRateCalculator"  class="com.celerity.service.rate.AbcRateCalculator"/>
 	
-	<bean id="rateDao"  class="com.celerity.censusmodel.dao.DefaultRateDao"/>
+	<bean id="rateDao"  class="com.celerity.censusmodel.dao.DatabaseRateDao"/>
+	
+	<bean id="fakeDao"  class="com.celerity.censusmodel.dao.FakeRateDao"/>
+	
 	
 	<bean id="rateService"  class="com.celerity.service.DefaultRateService">
 		<property name="rateCalculator" ref="abcRateCalculator"/>
-		<property name="rateDao" ref="rateDao"/>
+		<property name="rateDao" ref="fakeDao"/>
 	</bean>
 
 </beans>

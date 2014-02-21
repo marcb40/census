@@ -1,4 +1,4 @@
-package com.celerity.service.rest;
+package com.celerity.service.rest.adapters;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

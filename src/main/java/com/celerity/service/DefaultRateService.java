@@ -17,7 +17,7 @@ public class DefaultRateService implements RateService{
 	private RateDao rateDao;
 	
 	public RateDto getRate(CensusPersonDto person) {
-		List<Rate> rateObjs = rateDao.findRates(1000L);
+		List<Rate> rateObjs = rateDao.findRatesByProductId(2);
 		BigDecimal rate = rateCalculator.calculate(person, rateObjs);
 		return new RateDto(person.getId(), rate);
 	}
