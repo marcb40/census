@@ -1,4 +1,4 @@
-package com.celerity.service;
+package com.celerity.service.rest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

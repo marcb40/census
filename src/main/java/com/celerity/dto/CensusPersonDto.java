@@ -1,4 +1,4 @@
-package com.celerity.model;
+package com.celerity.dto;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -7,10 +7,10 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.celerity.service.BooleanAdapter;
-import com.celerity.service.DateAdapter;
+import com.celerity.service.rest.BooleanAdapter;
+import com.celerity.service.rest.DateAdapter;
 
-public class CensusPerson extends BaseModel {
+public class CensusPersonDto extends Basedto {
 
 	public enum Gender {
 		F, M
@@ -20,15 +20,15 @@ public class CensusPerson extends BaseModel {
 		ACTIVE, COBRA, DISABLED
 	}
 
-	public CensusPerson() {
+	public CensusPersonDto() {
 		super();
 	}
 
-	public CensusPerson(Long id) {
+	public CensusPersonDto(Long id) {
 		super(id);
 	}
 
-	public CensusPerson(int id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
+	public CensusPersonDto(int id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
 		super(Long.valueOf(id));
 		this.birthDate = birthDate;
 		this.gender = gender;
@@ -41,7 +41,7 @@ public class CensusPerson extends BaseModel {
 		this.lastTobaccoUse = lastTobaccoUse;
 	}
 
-	public CensusPerson(Long id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
+	public CensusPersonDto(Long id, Date birthDate, Gender gender, String lastName, String firstName, String dependentType, Boolean outOfArea, EmploymentStatus employmentStatus, Boolean usesTobacco, String lastTobaccoUse) {
 		super(id);
 		this.birthDate = birthDate;
 		this.gender = gender;
@@ -82,7 +82,7 @@ public class CensusPerson extends BaseModel {
 
 	private String lastTobaccoUse;
 
-	private Set<CensusPerson> enrolleeDependents = new HashSet<CensusPerson>(0);
+	private Set<CensusPersonDto> enrolleeDependents = new HashSet<CensusPersonDto>(0);
 
 	public Date getBirthDate() {
 		return birthDate;
@@ -124,11 +124,11 @@ public class CensusPerson extends BaseModel {
 		this.dependentType = dependentType;
 	}
 
-	public Set<CensusPerson> getEnrolleeDependents() {
+	public Set<CensusPersonDto> getEnrolleeDependents() {
 		return enrolleeDependents;
 	}
 
-	public void setEnrolleeDependents(Set<CensusPerson> enrolleeDependents) {
+	public void setEnrolleeDependents(Set<CensusPersonDto> enrolleeDependents) {
 		this.enrolleeDependents = enrolleeDependents;
 	}
 
@@ -180,18 +180,18 @@ public class CensusPerson extends BaseModel {
 		this.employmentStatus = employmentStatus;
 	}
 
-	public void addEnrolleeDependent(CensusPerson enrolleeDependent) {
+	public void addEnrolleeDependent(CensusPersonDto enrolleeDependent) {
 		if (enrolleeDependents == null)
-			enrolleeDependents = new HashSet<CensusPerson>();
+			enrolleeDependents = new HashSet<CensusPersonDto>();
 		enrolleeDependent.setEnrolleeId(getId());
 		enrolleeDependents.add(enrolleeDependent);
 	}
 
-	public void updateEnrolleeDependent(CensusPerson person) {
+	public void updateEnrolleeDependent(CensusPersonDto person) {
 		if (this.enrolleeDependents == null) {
 			addEnrolleeDependent(person);
 		} else {
-			for (CensusPerson p : enrolleeDependents) {
+			for (CensusPersonDto p : enrolleeDependents) {
 				if (person.getId().equals(p.getId())) {
 					enrolleeDependents.remove(p);
 					addEnrolleeDependent(person);
@@ -201,9 +201,9 @@ public class CensusPerson extends BaseModel {
 		}
 	}
 
-	public void deleteEnrolleeDependent(CensusPerson person) {
+	public void deleteEnrolleeDependent(CensusPersonDto person) {
 		if (this.enrolleeDependents != null) {
-			for (CensusPerson p : enrolleeDependents) {
+			for (CensusPersonDto p : enrolleeDependents) {
 				if (person.getId().equals(p.getId())) {
 					enrolleeDependents.remove(p);
 					break;

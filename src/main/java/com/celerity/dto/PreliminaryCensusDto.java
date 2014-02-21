@@ -1,21 +1,21 @@
-package com.celerity.model;
+package com.celerity.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreliminaryCensus extends BaseModel {
+public class PreliminaryCensusDto extends Basedto {
 
 	 private Long sgsCaseId;
 
-	 private List<CensusPerson> population = new ArrayList<CensusPerson>();
+	 private List<CensusPersonDto> population = new ArrayList<CensusPersonDto>();
 	 
 
 
-	public PreliminaryCensus() {
+	public PreliminaryCensusDto() {
 		super();
 	}
 
-	public PreliminaryCensus(Long id) {
+	public PreliminaryCensusDto(Long id) {
 		super(id);
 	}
 	
@@ -27,21 +27,21 @@ public class PreliminaryCensus extends BaseModel {
 		this.sgsCaseId = sgsCaseId;
 	}
 
-	public List<CensusPerson> getPopulation() {
+	public List<CensusPersonDto> getPopulation() {
 		return population;
 	}
 
-	public void addPopulation(CensusPerson person) {
-		if (this.population == null) population = new ArrayList<CensusPerson>();
+	public void addPopulation(CensusPersonDto person) {
+		if (this.population == null) population = new ArrayList<CensusPersonDto>();
 		person.setSgsCaseId(getSgsCaseId());
 		population.add(person);
 	}
 	
-	public void updatePopulation(CensusPerson person) {
+	public void updatePopulation(CensusPersonDto person) {
 		if (this.population == null) {
 			addPopulation(person);
 		} else {
-			for (CensusPerson p : population) {
+			for (CensusPersonDto p : population) {
 				if (person.getId().equals(p.getId())) {
 					population.remove(p);
 					addPopulation(person);
@@ -51,9 +51,9 @@ public class PreliminaryCensus extends BaseModel {
 		}
 	}
 	
-	public void deleteFromPopulation(CensusPerson person) {
+	public void deleteFromPopulation(CensusPersonDto person) {
 		if (this.population != null) {
-			for (CensusPerson p : population) {
+			for (CensusPersonDto p : population) {
 				if (person.getId().equals(p.getId())) {
 					population.remove(p);
 					break;

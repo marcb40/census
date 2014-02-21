@@ -1,15 +1,15 @@
-package com.celerity.model;
+package com.celerity.dto;
 
-public abstract class BaseModel {
+public abstract class Basedto {
 
 	private Long id;
 	
 
-	public BaseModel() {
+	public Basedto() {
 		super();
 	}
 
-	public BaseModel(Long id) {
+	public Basedto(Long id) {
 		super();
 		this.id = id;
 	}

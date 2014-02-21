@@ -10,7 +10,6 @@
 
  	<context:annotation-config/>
     <context:component-scan base-package="com.celerity.service" />
-    <mvc:annotation-driven />
 
 	<bean id="defRateCalculator"  class="com.celerity.service.rate.DefRateCalculator"/>
 	
@@ -18,9 +17,11 @@
 	
 	<bean id="rateDao"  class="com.celerity.censusmodel.dao.DefaultRateDao"/>
 	
+	<bean id="mockRateDao"  class="com.celerity.service.MockRateDao"/>
+	
 	<bean id="rateService"  class="com.celerity.service.DefaultRateService">
 		<property name="rateCalculator" ref="abcRateCalculator"/>
-		<property name="rateDao" ref="rateDao"/>
+		<property name="rateDao" ref="mockRateDao"/>
 	</bean>
 
 </beans>

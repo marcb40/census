@@ -1,20 +1,20 @@
-package com.celerity.model;
+package com.celerity.dto;
 
-public class SgsCase extends BaseModel {
+public class SgsCaseDto extends Basedto {
 
 	private String caseName;
 
-	private PreliminaryCensus preliminaryCensus;
+	private PreliminaryCensusDto preliminaryCensus;
 
-	public SgsCase() {
+	public SgsCaseDto() {
 		super();
 	}
 
-	public SgsCase(Long id) {
+	public SgsCaseDto(Long id) {
 		super(id);
 	}
 
-	public SgsCase(Long id, String caseName, PreliminaryCensus preliminaryCensus) {
+	public SgsCaseDto(Long id, String caseName, PreliminaryCensusDto preliminaryCensus) {
 		super(id);
 		this.caseName = caseName;
 		preliminaryCensus.setSgsCaseId(getId());
@@ -29,11 +29,11 @@ public class SgsCase extends BaseModel {
 		this.caseName = caseName;
 	}
 
-	public PreliminaryCensus getPreliminaryCensus() {
+	public PreliminaryCensusDto getPreliminaryCensus() {
 		return preliminaryCensus;
 	}
 
-	public void setPreliminaryCensus(PreliminaryCensus preliminaryCensus) {
+	public void setPreliminaryCensus(PreliminaryCensusDto preliminaryCensus) {
 		preliminaryCensus.setSgsCaseId(getId());
 		this.preliminaryCensus = preliminaryCensus;
 	}

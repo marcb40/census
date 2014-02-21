@@ -1,4 +1,4 @@
-package com.celerity.service;
+package com.celerity.service.rest;
 
 import java.util.Date;
 
@@ -13,22 +13,31 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import com.celerity.data.DataSource;
-import com.celerity.model.CensusPerson;
-import com.celerity.model.PreliminaryCensus;
-import com.celerity.model.SgsCase;
+import com.celerity.dto.CensusPersonDto;
+import com.celerity.dto.PreliminaryCensusDto;
+import com.celerity.dto.RateDto;
+import com.celerity.dto.SgsCaseDto;
+import com.celerity.service.api.RateService;
+import com.sun.jersey.api.core.InjectParam;
 
 @Path("/json/case")
+@Component
 public class CaseService {
 
+	@InjectParam 
+	private RateService rateService;
+	
 	@GET
 	@Path("census/{caseId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PreliminaryCensus getCensus(@PathParam("caseId") Long caseId) {
-		SgsCase sgsCase = DataSource.cases.get(caseId);
+	public PreliminaryCensusDto getCensus(@PathParam("caseId") Long caseId) {
+		SgsCaseDto sgsCase = DataSource.cases.get(caseId);
+		
 		return sgsCase.getPreliminaryCensus();
 	}
 
@@ -36,8 +45,8 @@ public class CaseService {
 	@Path("census/{caseId}/enrollee/{enrolleeId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CensusPerson addEnrollee(@PathParam("caseId") Long caseId, CensusPerson enrollee) {
-		SgsCase sgsCase = DataSource.cases.get(caseId);
+	public CensusPersonDto addEnrollee(@PathParam("caseId") Long caseId, CensusPersonDto enrollee) {
+		SgsCaseDto sgsCase = DataSource.cases.get(caseId);
 		enrollee.setId(Long.valueOf(DataSource.enrollee_seq++));
 		sgsCase.getPreliminaryCensus().addPopulation(enrollee);
 		DataSource.enrollees.put(enrollee.getId(), enrollee);
@@ -49,8 +58,8 @@ public class CaseService {
 	@Path("census/{caseId}/enrollee/{enrolleeId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CensusPerson updateEnrollee(@PathParam("caseId") Long caseId, CensusPerson enrollee) {
-		SgsCase sgsCase = DataSource.cases.get(caseId);
+	public CensusPersonDto updateEnrollee(@PathParam("caseId") Long caseId, CensusPersonDto enrollee) {
+		SgsCaseDto sgsCase = DataSource.cases.get(caseId);
 		sgsCase.getPreliminaryCensus().updatePopulation(enrollee);
 		DataSource.enrollees.put(enrollee.getId(), enrollee);
 
@@ -60,15 +69,23 @@ public class CaseService {
 	@GET
 	@Path("census/{caseId}/enrollee/{enrolleeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CensusPerson getEnrollee(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
+	public CensusPersonDto getEnrollee(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
 		return DataSource.enrollees.get(enrolleeId);
+	}
+	
+	@GET
+	@Path("census/{caseId}/enrollee/{enrolleeId}/rate")
+	@Produces(MediaType.APPLICATION_JSON)
+	public RateDto getEnrolleeRate(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
+		CensusPersonDto person = DataSource.enrollees.get(enrolleeId);
+		return rateService.getRate(person);
 	}
 	
 	@DELETE
 	@Path("census/{caseId}/enrollee/{enrolleeId}")
 	public void deleteEnrollee(@PathParam("caseId") Long caseId, @PathParam("enrolleeId") Long enrolleeId) {
-		SgsCase sgsCase = DataSource.cases.get(caseId);
-		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+		SgsCaseDto sgsCase = DataSource.cases.get(caseId);
+		CensusPersonDto enrollee = DataSource.enrollees.get(enrolleeId);
 		sgsCase.getPreliminaryCensus().deleteFromPopulation(enrollee);
 		 DataSource.enrollees.remove(enrolleeId);
 		
@@ -78,8 +95,8 @@ public class CaseService {
 	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CensusPerson addDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPerson dependent) {
-		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+	public CensusPersonDto addDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPersonDto dependent) {
+		CensusPersonDto enrollee = DataSource.enrollees.get(enrolleeId);
 		dependent.setId(Long.valueOf(DataSource.dependent_seq++));
 		enrollee.addEnrolleeDependent(dependent);
 		return dependent;
@@ -89,8 +106,8 @@ public class CaseService {
 	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CensusPerson updateDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPerson dependent) {
-		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+	public CensusPersonDto updateDependent(@PathParam("enrolleeId") Long enrolleeId, CensusPersonDto dependent) {
+		CensusPersonDto enrollee = DataSource.enrollees.get(enrolleeId);
 		enrollee.updateEnrolleeDependent(dependent);
 		return dependent;
 	}
@@ -98,9 +115,9 @@ public class CaseService {
 	@GET
 	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CensusPerson getDependent(@PathParam("enrolleeId") Long enrolleeId, @PathParam("dependentId") Long dependentId) {
-		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
-		for (CensusPerson d : enrollee.getEnrolleeDependents()) {
+	public CensusPersonDto getDependent(@PathParam("enrolleeId") Long enrolleeId, @PathParam("dependentId") Long dependentId) {
+		CensusPersonDto enrollee = DataSource.enrollees.get(enrolleeId);
+		for (CensusPersonDto d : enrollee.getEnrolleeDependents()) {
 			if (d.getId().equals(dependentId)) {
 				return d;
 			}
@@ -111,9 +128,9 @@ public class CaseService {
 	@DELETE
 	@Path("census/{caseId}/enrollee/{enrolleeId}/dependent/{dependentId}")
 	public void deleteDependent(@PathParam("enrolleeId") Long enrolleeId, @PathParam("dependentId") Long dependentId) {
-		CensusPerson enrollee = DataSource.enrollees.get(enrolleeId);
+		CensusPersonDto enrollee = DataSource.enrollees.get(enrolleeId);
 		
-		CensusPerson dependent = getDependent(enrolleeId, dependentId);
+		CensusPersonDto dependent = getDependent(enrolleeId, dependentId);
 		enrollee.deleteEnrolleeDependent(dependent);
 	}
 	
