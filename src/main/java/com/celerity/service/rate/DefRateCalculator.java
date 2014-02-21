@@ -9,6 +9,11 @@ import com.celerity.service.rate.api.RateCalculator;
 
 public class DefRateCalculator implements RateCalculator {
 
+	/*
+	 * Just return the second rate in the list no matter what person it is.
+	 * 
+	 * @see com.celerity.service.rate.api.RateCalculator#calculate(com.celerity.dto.CensusPersonDto, java.util.List)
+	 */
 	public BigDecimal calculate(CensusPersonDto person, List<Rate> rates) {
 		return rates.get(1).getRate();
 	}

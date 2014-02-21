@@ -3,7 +3,7 @@ package com.celerity.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreliminaryCensusDto extends Basedto {
+public class PreliminaryCensusDto extends BaseDto {
 
 	 private Long sgsCaseId;
 

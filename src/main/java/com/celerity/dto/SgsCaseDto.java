@@ -1,6 +1,6 @@
 package com.celerity.dto;
 
-public class SgsCaseDto extends Basedto {
+public class SgsCaseDto extends BaseDto {
 
 	private String caseName;
 

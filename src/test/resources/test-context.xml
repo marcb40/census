@@ -15,8 +15,6 @@
 	
 	<bean id="abcRateCalculator"  class="com.celerity.service.rate.AbcRateCalculator"/>
 	
-	<bean id="rateDao"  class="com.celerity.censusmodel.dao.DefaultRateDao"/>
-	
 	<bean id="mockRateDao"  class="com.celerity.service.MockRateDao"/>
 	
 	<bean id="rateService"  class="com.celerity.service.DefaultRateService">

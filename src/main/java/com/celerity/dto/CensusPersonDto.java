@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.celerity.service.rest.adapters.BooleanAdapter;
 import com.celerity.service.rest.adapters.DateAdapter;
 
-public class CensusPersonDto extends Basedto {
+public class CensusPersonDto extends BaseDto {
 
 	public enum Gender {
 		F, M

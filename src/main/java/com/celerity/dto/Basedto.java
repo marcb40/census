@@ -1,15 +1,15 @@
 package com.celerity.dto;
 
-public abstract class Basedto {
+public abstract class BaseDto {
 
 	private Long id;
 	
 
-	public Basedto() {
+	public BaseDto() {
 		super();
 	}
 
-	public Basedto(Long id) {
+	public BaseDto(Long id) {
 		super();
 		this.id = id;
 	}

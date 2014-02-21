@@ -37,7 +37,7 @@ public class TestCaseService {
 		Assert.assertNotNull( rate);
 		Assert.assertNotNull( rate.getPersonId());
 		Assert.assertEquals(Long.valueOf(3), rate.getPersonId());
-		Assert.assertEquals(BigDecimal.valueOf(40), rate.getRate());
+		Assert.assertEquals(BigDecimal.valueOf(3333), rate.getRate());
 	}
 	
 	@Test
