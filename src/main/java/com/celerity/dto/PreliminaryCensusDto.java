@@ -62,4 +62,10 @@ public class PreliminaryCensusDto extends BaseDto {
 		}
 	}
 
+	@Override
+	public String output() {
+		return "Case id = " + sgsCaseId;
+	}
+
+	
 }

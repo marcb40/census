@@ -22,4 +22,6 @@ public abstract class BaseDto {
 		this.id = id;
 	}
 	
+	public abstract String output();
+	
 }

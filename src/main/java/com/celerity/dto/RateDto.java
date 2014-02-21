@@ -2,7 +2,7 @@ package com.celerity.dto;
 
 import java.math.BigDecimal;
 
-public class RateDto {
+public class RateDto extends BaseDto {
 
 	
 	private Long personId;
@@ -34,6 +34,11 @@ public class RateDto {
 
 	public void setRate(BigDecimal rate) {
 		this.rate = rate;
+	}
+
+	@Override
+	public String output() {
+		return String.valueOf(rate);
 	}
 	
 	

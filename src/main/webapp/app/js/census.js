@@ -1,4 +1,26 @@
-var app = angular.module("myApp", ['ngResource', 'ngCookies', '$strap.directives']);
+var app = angular.module("myApp", ['ngResource', 'ngCookies', '$strap.directives'], function ($routeProvider, $locationProvider, $httpProvider) {
+
+    var interceptor = ['$rootScope', '$q', function (scope, $q) {
+
+        function success(response) {
+            return response;
+        }
+
+        function error(response) {
+            alert(response.data);
+            return $q.reject(response);
+
+        }
+
+        return function (promise) {
+            return promise.then(success, error);
+        };
+
+    }];
+    $httpProvider.responseInterceptors.push(interceptor);
+    
+});
+
 
 app.config(function ($httpProvider, $routeProvider) {
 	$httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
@@ -7,6 +29,7 @@ app.config(function ($httpProvider, $routeProvider) {
     $routeProvider.
     when('/', {templateUrl: 'templates/census.html',   controller: "CensusCtrl"}).
     otherwise({redirectTo: '/'});
+    
 });
 
 
@@ -30,6 +53,14 @@ app.factory('Enrollee', function($resource){
 });   
 
 /**
+ * Rate Service
+ */
+app.factory('Rate', function($resource){
+	return $resource('/census/rest/json/case/census/:caseId/enrollee/:enrolleeId/rate', {'enrolleeId':0}, {
+	});
+}); 
+
+/**
  * Dependent service
  */
 app.factory('Dependent', function($resource){
@@ -41,7 +72,7 @@ app.factory('Dependent', function($resource){
 }); 
 
 
-app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
+app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent, Rate) {
 	$scope.model = {caseId:1, census:Census.get({caseId:1})};
 	$scope.enrollee = {};
 	
@@ -89,6 +120,13 @@ app.controller("CensusCtrl", function($scope, Census, Enrollee, Dependent) {
 				$scope.model.census.population.splice(i, 1);
 			}
 			$scope.enrollee = {};
+		});
+		
+	};
+	
+	$scope.getRate = function(enrollee) { 
+		$scope.model.rateObj = Rate.get({caseId:$scope.model.caseId, enrolleeId:enrollee.id}, function() {
+			alert($scope.model.rateObj.rate);
 		});
 		
 	};

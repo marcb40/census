@@ -102,8 +102,9 @@
 					<div ng-repeat="enrollee in model.census.population">
 						<div class="well">
 							<div class="row">
-								<div class="col-md-11 enrollee-name">{{enrollee.firstName}} {{enrollee.lastName}}</div>
-								<div class="col-md-1 text-right">
+								<div class="col-md-10 enrollee-name">{{enrollee.firstName}} {{enrollee.lastName}}</div>
+								<div class="col-md-2 text-right">
+									<i class="glyphicon glyphicon-euro" ng-click="getRate(enrollee)"></i>
 									<i class="glyphicon glyphicon-pencil" ng-click="editEnrollee(enrollee)"></i>
 									<i class="glyphicon glyphicon-trash" ng-click="deleteEnrollee(enrollee)"></i>
 								</div>

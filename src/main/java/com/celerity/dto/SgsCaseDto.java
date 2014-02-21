@@ -37,4 +37,9 @@ public class SgsCaseDto extends BaseDto {
 		preliminaryCensus.setSgsCaseId(getId());
 		this.preliminaryCensus = preliminaryCensus;
 	}
+	
+	@Override
+	public String output() {
+		return caseName;
+	}
 }

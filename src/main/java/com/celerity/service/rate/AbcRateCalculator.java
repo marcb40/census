@@ -15,7 +15,16 @@ public class AbcRateCalculator  implements RateCalculator {
 	 * @see com.celerity.service.rate.api.RateCalculator#calculate(com.celerity.dto.CensusPersonDto, java.util.List)
 	 */
 	public BigDecimal calculate(CensusPersonDto person, List<Rate> rates) {
-		return rates.get(0).getRate();
+		return calculate(person, rates, false);
 	}
+
+	/*
+	 * example of overloading a method
+	 * @see com.celerity.service.rate.api.RateCalculator#calculate(com.celerity.dto.CensusPersonDto, java.util.List, boolean)
+	 */
+	public BigDecimal calculate(CensusPersonDto person, List<Rate> rates, boolean specialRate) {
+		return (specialRate) ? rates.get(0).getRate().add(BigDecimal.valueOf(-5)) : rates.get(0).getRate();
+	}
+	
 	
 }

@@ -212,4 +212,11 @@ public class CensusPersonDto extends BaseDto {
 		}
 	}
 
+	@Override
+	public String output() {
+		return firstName;
+	}
+	
+	
+
 }
