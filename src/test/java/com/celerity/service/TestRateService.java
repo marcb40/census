@@ -26,6 +26,7 @@ public class TestRateService {
 	public void testGetRates() throws Exception {
 		CensusPersonDto person = new CensusPersonDto();
 		person.setId(1L);
+		person.setLastName("Smith");
 		RateDto rateDto = rateService.getRate(person);
 		Assert.assertNotNull(rateDto);
 		Assert.assertEquals(BigDecimal.valueOf(1111), rateDto.getRate());
