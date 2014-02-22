@@ -12,8 +12,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -24,13 +24,10 @@ import com.celerity.dto.RateDto;
 import com.celerity.dto.SgsCaseDto;
 import com.celerity.service.api.RateService;
 import com.celerity.service.rest.adapters.DateAdapter;
-import com.sun.jersey.api.core.InjectParam;
 
 @Path("/json/case")
-@Component
 public class CaseRestService {
 
-	@InjectParam 
 	private RateService rateService;
 	
 	@GET
@@ -140,5 +137,16 @@ public class CaseRestService {
 		DateAdapter.inDateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(DateAdapter.inDateFormat, false));
 	}
+
+	public RateService getRateService() {
+		return rateService;
+	}
+
+	@Required
+	public void setRateService(RateService rateService) {
+		this.rateService = rateService;
+	}
+	
+	
 
 }

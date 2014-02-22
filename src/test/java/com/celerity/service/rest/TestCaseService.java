@@ -25,11 +25,15 @@ public class TestCaseService {
 		URI uri = new URI("http://localhost:8080/census/rest/json/case/census/1");
 		String census = restTemplate.getForObject(uri, String.class);
 		Assert.assertNotNull(census);
-		Assert.assertEquals("{\"sgsCaseId\":1,\"population\":[{\"id\":1,\"birthDate\":\"10/01/1978\",\"gender\":\"F\",\"lastName\":\"Last1\",\"firstName\":\"First1\",\"sgsCaseId\":null,\"dependentType\":null,\"enrolleeId\":null,\"outOfArea\":\"false\",\"employmentStatus\":\"ACTIVE\",\"usesTobacco\":\"true\",\"lastTobaccoUse\":\"08/2012\",\"enrolleeDependents\":[]}],\"id\":1}", census);
+		Assert.assertTrue(census.contains("\"sgsCaseId\":1"));
+		Assert.assertTrue(census.contains("\"birthDate\":\"10/01/1978\""));
+		Assert.assertTrue(census.contains("\"gender\":\"F\""));
+		Assert.assertTrue(census.contains("\"lastName\":\"Last1\""));
+		Assert.assertTrue(census.contains("\"firstName\":\"First1\""));
 		
 	}
 	
-	//@Test
+	@Test
 	public void testEnrolleeRate() throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
 		URI enrolleeURI = new URI("http://localhost:8080/census/rest/json/case/census/1/enrollee/3/rate");

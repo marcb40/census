@@ -8,9 +8,9 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
- 	<context:annotation-config/>
-    <context:component-scan base-package="com.celerity.service" />
-    <mvc:annotation-driven />
+   <context:component-scan base-package="com.celerity.service" />
+   <context:annotation-config/> 
+    
 
 	<bean id="defRateCalculator"  class="com.celerity.service.rate.DefRateCalculator"/>
 	
@@ -24,6 +24,10 @@
 	<bean id="rateService"  class="com.celerity.service.DefaultRateService">
 		<property name="rateCalculator" ref="abcRateCalculator"/>
 		<property name="rateDao" ref="fakeDao"/>
+	</bean>
+	
+	<bean id="caseRestService"  class="com.celerity.service.rest.CaseRestService">
+		<property name="rateService" ref="rateService"/>
 	</bean>
 
 </beans>
